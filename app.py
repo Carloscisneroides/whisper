@@ -6,8 +6,8 @@ app = Flask(__name__)
 UPLOAD_FOLDER = "uploads"
 os.makedirs(UPLOAD_FOLDER, exist_ok=True)
 
-print("Cargando modelo large-v3... (puede tardar un momento)")
-model = whisper.load_model("large-v3")
+print("Cargando modelo medium... (puede tardar un momento)")
+model = whisper.load_model("medium")
 print("Modelo listo.")
 
 HTML = """
@@ -149,7 +149,7 @@ HTML = """
 <body>
   <div class="card">
     <h1>🎙️ Whisper Transcriptor</h1>
-    <p class="subtitle">Modelo: <strong>large-v3</strong> &mdash; Transcripción automática en español</p>
+    <p class="subtitle">Modelo: <strong>medium</strong> &mdash; Transcripción automática en español</p>
 
     <div class="upload-area" id="uploadArea">
       <input type="file" id="audioFile" accept=".mp3,.wav,.m4a,.ogg,.flac,.webm" />
@@ -204,7 +204,7 @@ HTML = """
 
       transcribeBtn.disabled = true;
       resultBox.style.display = 'none';
-      statusEl.innerHTML = '<span class="spinner"></span>Transcribiendo con modelo large-v3...';
+      statusEl.innerHTML = '<span class="spinner"></span>Transcribiendo con modelo medium...';
 
       const formData = new FormData();
       formData.append('audio', file);
@@ -288,4 +288,5 @@ def transcribe():
             os.remove(processed_path)
 
 if __name__ == "__main__":
-    app.run(port=3001, debug=False)
+    port = int(os.environ.get("PORT", 3001))
+    app.run(host="0.0.0.0", port=port, debug=False)
